@@ -1,32 +1,42 @@
-CoreGuardian 🛡️
 
-A Linux kernel module testing framework for detecting crashes, panics, and vulnerabilities.
+# **CoreGuardian** 🛡️
 
-📌 Overview
+> *A Linux kernel module testing framework for detecting crashes, panics, and vulnerabilities.*
 
-CoreGuardian is a lightweight framework designed to test the stability and security of the Linux kernel by loading custom kernel modules that intentionally trigger faults or stress the system.
+---
 
-The project helps developers and security researchers observe kernel behavior, identify vulnerabilities, and safely experiment with kernel-level code inside a virtualized environment.
+## **📌 Overview**
 
-✨ Features
+CoreGuardian is a lightweight framework designed to **test the stability and security of the Linux kernel** by loading custom kernel modules that intentionally trigger faults or stress the system.
 
-🧩 Custom Kernel Modules – Create and load .ko files to test different kernel operations.
+The project helps developers and security researchers **observe kernel behavior**, identify vulnerabilities, and safely experiment with kernel-level code inside a virtualized environment.
 
-⚡ Fault Injection – Trigger edge cases to detect improper memory handling or panics.
+---
 
-🔍 Crash Detection – Monitor system logs (dmesg) for kernel oops or crashes.
+## **✨ Features**
 
-🖥️ VM Safe Environment – Designed for testing inside virtual machines like VMware.
+* 🧩 **Custom Kernel Modules** – Create and load `.ko` files to test different kernel operations.
+* ⚡ **Fault Injection** – Trigger edge cases to detect improper memory handling or panics.
+* 🔍 **Crash Detection** – Monitor system logs (`dmesg`) for kernel oops or crashes.
+* 🖥️ **VM Safe Environment** – Designed for testing inside virtual machines like **VMware**.
+* 🌱 **Educational Resource** – Great for learning **Linux kernel internals** and low-level programming.
 
-🌱 Educational Resource – Great for learning Linux kernel internals and low-level programming.
+---
 
-🛠️ Tech Stack
-Component	Technology Used
-Language	C (Kernel Module Development)
-Kernel	Linux Kernel (Tested on Ubuntu)
-Virtualization	VMware Workstation
-Tools	GCC, Make, Git
-📂 Project Structure
+## **🛠️ Tech Stack**
+
+| Component          | Technology Used                 |
+| ------------------ | ------------------------------- |
+| **Language**       | C (Kernel Module Development)   |
+| **Kernel**         | Linux Kernel (Tested on Ubuntu) |
+| **Virtualization** | VMware Workstation              |
+| **Tools**          | GCC, Make, Git                  |
+
+---
+
+## **📂 Project Structure**
+
+```
 CoreGuardian/
 │
 ├── kernel_test_module/
@@ -37,105 +47,135 @@ CoreGuardian/
 ├── scripts/                 # Helper scripts for testing and logging
 │
 └── docs/                     # Additional documentation
+```
 
-🚀 Installation & Setup
-1. Clone the Repository
+---
+
+## **🚀 Installation & Setup**
+
+### **1. Clone the Repository**
+
+```bash
 git clone https://github.com/<your-username>/CoreGuardian.git
 cd CoreGuardian/kernel_test_module
+```
 
-2. Build the Kernel Module
+---
 
-Ensure you have Linux kernel headers installed:
+### **2. Build the Kernel Module**
 
+Ensure you have **Linux kernel headers** installed:
+
+```bash
 sudo apt update
 sudo apt install build-essential linux-headers-$(uname -r)
-
+```
 
 Compile the module:
 
+```bash
 make
-
+```
 
 This will generate:
 
+```
 oops_demo.ko
+```
 
-3. Insert the Module into the Kernel
+---
 
-⚠️ Warning: Only test inside a virtual machine to prevent damaging your host system.
+### **3. Insert the Module into the Kernel**
 
+> ⚠️ **Warning:** Only test inside a **virtual machine** to prevent damaging your host system.
+
+```bash
 sudo insmod oops_demo.ko
-
+```
 
 If successful, check logs:
 
+```bash
 dmesg | tail
+```
 
-4. Remove the Module
+---
+
+### **4. Remove the Module**
+
+```bash
 sudo rmmod oops_demo
+```
 
-⚙️ Implementation Details
+---
 
-The oops_demo.c module is designed to intentionally trigger a fault in the kernel to test how the system handles abnormal behavior.
+## **⚙️ Implementation Details**
 
-Key Steps in Implementation
+The `oops_demo.c` module is designed to **intentionally trigger a fault** in the kernel to test how the system handles abnormal behavior.
 
-Module Initialization (init_module)
+### **Key Steps in Implementation**
 
-The module is loaded using insmod.
+1. **Module Initialization (`init_module`)**
 
-Registers itself with the kernel logging system.
+   * The module is loaded using `insmod`.
+   * Registers itself with the kernel logging system.
 
-Fault Triggering
+2. **Fault Triggering**
 
-The module deliberately performs invalid memory access or other unsafe operations, which should cause a kernel oops.
+   * The module deliberately performs invalid memory access or other unsafe operations, which should cause a **kernel oops**.
+   * This helps researchers observe how the kernel reacts to unsafe code.
 
-This helps researchers observe how the kernel reacts to unsafe code.
+3. **Cleanup (`cleanup_module`)**
 
-Cleanup (cleanup_module)
+   * Proper cleanup is done to remove traces after testing using `rmmod`.
 
-Proper cleanup is done to remove traces after testing using rmmod.
+---
 
-📊 Example Log Output
+## **📊 Example Log Output**
 
 Example output after inserting the module:
 
+```
 [  120.567890] CoreGuardian: Loading faulty module...
 [  120.567912] BUG: unable to handle kernel NULL pointer dereference at 00000000
 [  120.567933] Oops: 0002 [#1] SMP
 [  120.567950] CoreGuardian: Test complete - kernel crash successfully simulated.
+```
 
-🧪 Testing Workflow
+---
 
-Launch your VMware Linux VM.
+## **🧪 Testing Workflow**
 
-Build and load the kernel module.
+1. Launch your **VMware Linux VM**.
+2. Build and load the kernel module.
+3. Use `dmesg` or `/var/log/kern.log` to monitor crashes.
+4. Document the observed behavior for security research or educational purposes.
 
-Use dmesg or /var/log/kern.log to monitor crashes.
+---
 
-Document the observed behavior for security research or educational purposes.
+## **🌐 Future Enhancements**
 
-🌐 Future Enhancements
+* Add **automated logging scripts** to record kernel behavior.
+* Provide a **dashboard** for visualizing crash data.
+* Include more fault types like memory leaks and race conditions.
+* Add **GitHub Actions** for automated module build testing.
 
-Add automated logging scripts to record kernel behavior.
+---
 
-Provide a dashboard for visualizing crash data.
+## **📜 License**
 
-Include more fault types like memory leaks and race conditions.
+This project is licensed under the **MIT License** – you are free to use, modify, and distribute it for educational or research purposes.
 
-Add GitHub Actions for automated module build testing.
+---
 
-📜 License
+## **🙌 Acknowledgements**
 
-This project is licensed under the MIT License – you are free to use, modify, and distribute it for educational or research purposes.
+* **Linux Kernel Documentation** – invaluable resource for module development.
+* Open-source community for tools like **GCC** and **VMware Workstation**.
 
-🙌 Acknowledgements
+---
 
-Linux Kernel Documentation – invaluable resource for module development.
+### **Final Note**
 
-Open-source community for tools like GCC and VMware Workstation.
-
-Final Note
-
-CoreGuardian is meant strictly for educational and research purposes.
-Never load faulty kernel modules on a production system — always use a virtual machine or test environment.
+CoreGuardian is meant strictly for **educational and research purposes**.
+Never load faulty kernel modules on a production system — always use a **virtual machine** or test environment.
